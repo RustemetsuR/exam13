@@ -1,33 +1,60 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const { nanoid } = require("nanoid");
-
-const SALT_WORK_FACTOR = 10;
-
 const Schema = mongoose.Schema;
 
-const PlaceSchema = new Schema({
-    username: {
+const Reviews = new Schema({
+    userID: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
+    text: {
+        type: String,
+    },
+    dateTime: {
+        type: String,
+        default: new Date().toISOString(),
+    },
+    scores: {
+        qualityOfFood:{
+            type: Number,
+            min: 1,
+            max: 5
+        },
+        serviceQuality:{
+            type: Number,
+            min: 1,
+            max: 5
+        },
+        interior:{
+            type: Number,
+            min: 1,
+            max: 5
+        }
+    }
+});
+
+const PlacesSchema = new Schema({
+    userID: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
+    },
+   title: {
+       type: String,
+       required: true,
+    },
+    description: {
         type: String,
         required: true,
-        unique: true,
     },
-    role: {
-        type: String,
-        required: true,
-        default: "user"
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    token: {
-        type: String,
-        required: true
-    },
+   mainImage: {
+       type: String,
+       required: true
+   },
+    othersImages: [{url: String}],
+    reviews: [Reviews]
 });
 
 
-const Place = mongoose.model("NewPlace", PlaceSchema);
+const Places = mongoose.model("Places", PlacesSchema);
 
-module.exports = NewPlace;
+module.exports = Places;
