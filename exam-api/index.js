@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const users = require("./app/users");
+const places = require("./app/places");
 const app = express();
 const port = 8000;
 const config = require("./config");
@@ -14,6 +15,7 @@ const run = async () => {
     await mongoose.connect(config.db.url + "/" + config.db.name,  { useNewUrlParser: true , useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true});
 
     app.use("/users", users);
+    app.use("/places", places);
     console.log("Connected to mongo DB");
 
     app.listen(port, () => {
